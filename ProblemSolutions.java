@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   RAMIZ HAMEED / 002
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -64,11 +64,25 @@ public class ProblemSolutions {
      */
 
   public static int lastBoulder(int[] boulders) {
+      PriorityQueue<Integer> queue = new PriorityQueue<>(Comparator.reverseOrder());
 
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
+      for (int num : boulders) { // add all boulders to queue
+          queue.add(num); //
+      }
+
+      while (queue.size() > 1) {
+          int first = queue.poll(); // remove the heaviest
+          int second = queue.poll(); // remove the second heavy
+
+          if (first != second) { // smash
+              queue.add(first - second); // add diff back to queue
+          }
+      }
+      if (queue.isEmpty()) {
+          return 0; // none
+      } else {
+          return queue.peek(); // return last boulder
+      }
   }
 
 
@@ -90,13 +104,34 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
+        ArrayList<String> duplicates = new ArrayList<>();
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        for (int i=0; i < input.size(); i++) {
+            String current = input.get(i);
+            boolean isDupe = false;
 
-    }
+            for (String str : duplicates) {
+                if (str.equals(current)) {
+                    isDupe = true;
+                    break;
+                }
+            }
+            if (!isDupe) {
+                int count = 0;
+
+                for (int j = 0; j < input.size(); j++) {
+                    if (input.get(j).equals(current)) {
+                        count++;
+                    }
+                }
+                if (count > 1) {
+                    duplicates.add(current);
+                }
+            }
+        }
+        Collections.sort(duplicates);
+
+    return duplicates;}
 
 
     /**
@@ -130,10 +165,23 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> pair(int[] input, int k) {
+        ArrayList<String> pairs = new ArrayList<>();
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        for (int i = 0; i < input.length; i++) {
+            for (int j = i + 1; j < input.length; j++) {
+                if (input[i] + input[j] == k) {
+                    int num1 = Math.min(input[i], input[j]);
+                    int num2 = Math.max(input[i], input[j]);
+                    String pairStr = "(" + num1 + ", " + num2 + ")";
+
+                    if (!pairs.contains(pairStr)) {
+                        pairs.add(pairStr);
+                    }
+                }
+            }
+        }
+
+        Collections.sort(pairs);
+        return pairs;  // Make sure returned lists is sorted as indicated above
     }
 }
